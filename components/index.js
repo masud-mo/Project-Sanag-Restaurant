@@ -1,3 +1,4 @@
+
 const foodContainer = document.getElementById("foodContainer");
 
 async function loadFoods(){
@@ -91,4 +92,9 @@ menuData.forEach(category=>{
   card.innerHTML = html;
   menuContainer.appendChild(card);
 });
+const foodApi = "https://foodish-api.com"
+ function displayApi() {
+    return axios.get(foodApi) .then((response) => console.log (response) )
+ }
+ displayApi()
 
