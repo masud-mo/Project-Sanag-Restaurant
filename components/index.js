@@ -16,7 +16,6 @@ async function loadFoods(){
 
   try{
     const responses = await Promise.all(promises);
-    console.log(responses)
     responses.forEach((response) => {
       if (response && response.data && response.data.meals) {
         const meal = response.data.meals[0];
@@ -27,7 +26,7 @@ async function loadFoods(){
           <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
           <div class="content">
             <h3>${meal.strMeal}</h3>
-            <p>Delicious meal prepared with traditional flavors.</p>
+            <p>Category: ${meal.strCategory}</p>
           </div>
         `;
         foodContainer.appendChild(card);
@@ -41,64 +40,85 @@ async function loadFoods(){
 loadFoods();
 
 
-const menuData = [
-  {
-    category:"Main Dishes",
-    items:[
-      {name:"Hilib Ari", desc:"Tender goat meat served with spiced rice", price:"$15.99"},
-      {name:"Bariis iyo Hilib", desc:"Somali-style rice with braised beef", price:"$14.00"},
-      {name:"Suqaar", desc:"Diced meat sautéed with vegetables", price:"$13.99"},
-      {name:"Sabayad", desc:"Flatbread served with curry sauce", price:"$11.00"}
-    ]
-  },
-  {
-    category:"Appetizers",
-    items:[
-      {name:"Sambuusa", desc:"Crispy pastry filled with spiced meat", price:"$2.99"},
-      {name:"Bajiye", desc:"Bean fritters with green chilies", price:"$4.00"},
-      {name:"Malawah", desc:"Sweet pancake-like bread", price:"$3.99"}
-    ]
-  },
-  {
-    category:"Drinks",
-    items:[
-      {name:"Shaah", desc:"Somali spiced tea", price:"$2.99"},
-      {name:"Qaxwo", desc:"Traditional Somali coffee", price:"$2.00"},
-      {name:"Mango Juice", desc:"Fresh mango juice", price:"$3.99"}
-    ]
+async function loadMenu() {
+  const menuContainer = document.getElementById("menuContainer");
+  if (!menuContainer) return;
+
+  const categories = [
+    { apiCat: 'Lamb', display: 'Main Dishes' },
+    { apiCat: 'Starter', display: 'Appetizers' },
+    { apiCat: 'Dessert', display: 'Desserts' }
+  ];
+
+  try {
+    const promises = categories.map(cat => 
+      axios.get(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${cat.apiCat}`)
+    );
+
+    const responses = await Promise.all(promises);
+
+    menuContainer.innerHTML = ""; 
+    
+    let customItems = [];
+    try {
+      customItems = JSON.parse(localStorage.getItem('sanagCustomMenu')) || [];
+    } catch (error) {
+      console.error("Error parsing custom menu data:", error);
+      customItems = [];
+    }
+
+    if (customItems.length > 0) {
+      const customCard = document.createElement("div");
+      customCard.className = "menu-card";
+      let customHtml = `<h3>Chef's Specials</h3>`;
+      
+      customItems.forEach(item => {
+        customHtml += `
+          <div class="menu-item" style="align-items: center;">
+            ${item.image ? `<img src="${item.image}" alt="${item.name}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 5px; margin-right: 15px;">` : ''}
+            <div style="flex: 1;"><strong>${item.name}</strong><p>${item.desc}</p></div>
+            <span style="color: #e67e22; font-weight: bold;">$${item.price}</span>
+          </div>
+        `;
+      });
+      customCard.innerHTML = customHtml;
+      menuContainer.appendChild(customCard);
+    }
+
+    responses.forEach((response, index) => {
+      const categoryConfig = categories[index];
+      const meals = response.data.meals ? response.data.meals.slice(0, 4) : [];
+
+      const card = document.createElement("div");
+      card.className = "menu-card";
+
+      let html = `<h3>${categoryConfig.display}</h3>`;
+
+      meals.forEach(meal => {
+        const price = (Math.random() * (25 - 5) + 5).toFixed(2);
+        
+        html += `
+          <div class="menu-item">
+            <div>
+              <strong>${meal.strMeal}</strong>
+              <p>Delicious authentic ${categoryConfig.display.toLowerCase().slice(0, -1)} option.</p>
+            </div>
+            <span>$${price}</span>
+          </div>
+        `;
+      });
+
+      card.innerHTML = html;
+      menuContainer.appendChild(card);
+    });
+  } catch (error) {
+    console.error("Error loading menu:", error);
+    menuContainer.innerHTML = "<p>Unable to load menu items.</p>";
   }
-];
+}
 
-const menuContainer = document.getElementById("menuContainer");
+loadMenu();
 
-menuData.forEach(category=>{
-  const card = document.createElement("div");
-  card.className="menu-card";
-
-  let html = `<h3>${category.category}</h3>`;
-
-  category.items.forEach(item=>{
-    html += `
-      <div class="menu-item">
-        <div>
-          <strong>${item.name}</strong>
-          <p>${item.desc}</p>
-        </div>
-        <span>${item.price}</span>
-      </div>
-    `;
-  });
-
-  card.innerHTML = html;
-  menuContainer.appendChild(card);
-});
-const foodApi = "https://foodish-api.com"
- function displayApi() {
-    return axios.get(foodApi) .then((response) => console.log (response) )
- }
- displayApi()
-
-// Hamburger Menu Functionality
 const hamburger = document.querySelector('.hamburger');
 const navLinks = document.querySelector('.nav-links');
 
@@ -106,4 +126,36 @@ if (hamburger && navLinks) {
   hamburger.addEventListener('click', () => {
     navLinks.classList.toggle('nav-active');
   });
+}
+
+const themeToggle = document.getElementById('theme-toggle');
+themeToggle.addEventListener('click', () => {
+  document.body.classList.toggle('dark-mode');
+  if (document.body.classList.contains('dark-mode')) {
+    themeToggle.textContent = '☀️'; 
+  } else {
+    themeToggle.textContent = '🌙';
+  }
+});
+
+const contactForm = document.getElementById('contactForm');
+if (contactForm) {
+  contactForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const message = document.getElementById('message').value;
+    
+    const subject = encodeURIComponent(`New Message from ${name}`);
+    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nMessage: ${message}`);
+    
+    window.location.href = `mailto:info@sanaagrestaurant.com?subject=${subject}&body=${body}`;
+  });
+}
+const adminLink = document.getElementById('adminLink');
+if (adminLink) {
+  if (sessionStorage.getItem('isLoggedIn') === 'true') {
+    adminLink.textContent = 'Admin Dashboard';
+    adminLink.href = 'admin.html';
+  }
 }

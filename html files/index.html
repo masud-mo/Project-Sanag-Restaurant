@@ -5,9 +5,128 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../style files/style.css">
+    <link rel="icon" href="../assets/chef-hat.png" type="image/png">
     <title>Sanag Restaurant</title>
 </head>
 <body>
-    <script src="components/index.js"></script>
+    <div class="container">
+        <a href="index.html" class="logo">
+            <img src="../assets/chef-hat.png" alt="Sanag Restaurant Logo">
+            <h1>Sanag Restaurant</h1>
+        </a>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="#menu">Menu</a>
+            <a href="about.html">About Us</a>
+            <a href="#contact">Contact</a>
+            <a href="login.html" id="adminLink">Admin Login</a>
+            <button id="theme-toggle" class="theme-btn">🌙</button>
+        </div>
+    </div>
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Welcome to Sanag Restaurant</h1>
+            <p>Experience authentic Somali cuisine in the heart of Minnesota.</p>
+            <a href="#menu" class="btn">View Our Menu</a>
+        </div>
+    </section>   
+<section class="culinary">
+  <h2>Our Culinary Journey</h2>
+  <p class="subtitle">A glimpse into our kitchen and dishes</p>
+  <div class="food-container" id="foodContainer">
+  </div>
+</section>
+<section class="menu" id="menu">
+  <h2>Our Menu</h2>
+  <p class="subtitle">Discover our authentic Somali dishes</p>
+  <div class="menu-container" id="menuContainer">
+  </div>
+</section>
+<section class="story">
+  <div class="story-container">
+    
+    <div class="story-image">
+      <img src="../assets/restaurant.jpg" alt="Restaurant Story">
+    </div>
+
+    <div class="story-content">
+      <h2>Our Story</h2>
+      <p>
+        Founded in 2015, Sanag Restaurant brings the authentic flavors of 
+        Somalia to Minnesota. Our recipes have been passed down through 
+        generations, and we take pride in serving traditional Somali dishes 
+        made with the finest ingredients and spices.
+      </p>
+
+      <p>
+        Named after the beautiful Sanaag region of Somalia, our restaurant 
+        aims to provide not just a meal, but an experience that transports 
+        you to the vibrant culture and warm hospitality of East Africa.
+      </p>
+    </div>
+
+  </div>
+</section>
+       <section class="visit-us" id="contact">
+             <h2>Visit Us</h2>
+              <p>We’d love to serve you</p>
+            <div> 
+                <h3>Location</h3>
+                <p>123 Cedar Ave<br>Minneapolis, MN 55454</p>
+            </div>
+            <div> 
+                <h3>Hours</h3> 
+                <p>Monday – Sunday<br>11:00 AM – 10:00 PM</p>
+            </div> 
+            <div> 
+                <h3>Contact</h3> 
+                <p>(612) 555-0123 <br>info@sanaagrestaurant.com</p>
+            </div> 
+            <div class="contact-form-container">
+                <h3>Send us a Message</h3>
+                <form id="contactForm">
+        <input type="text" id="name" placeholder="Your Name" required style="display:block; margin: 10px 0; padding: 8px; width: 100%;">
+        <input type="email" id="email" placeholder="Your Email" required style="display:block; margin: 10px 0; padding: 8px; width: 100%;">
+        <textarea id="message" placeholder="Your Message" rows="4" required style="display:block; margin: 10px 0; padding: 8px; width: 100%;"></textarea>
+        <button type="submit" class="btn">Send Message</button>
+    </form>
+ </div>
+</section>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-left">
+                <div class="footer-logo">
+                    <img src="../assets/chef-hat.png" alt="Sanag Restaurant Logo">
+                    <h2>Sanag Restaurant</h2>
+                </div>
+                <p>Experience authentic Somali cuisine in the heart of Minnesota.</p>
+            </div>
+            <div class="footer-nav">
+                <h3> Quick Links</h3>
+                <a href="index.html">Home</a>
+                <a href="#menu">Menu</a>
+                <a href="about.html">About Us</a>
+                <a href="#contact">Contact</a>
+                <a href="login.html">Admin Login</a>
+            </div>
+            <div class="footer-social">
+                <h3>Follow Us</h3>
+                <div class="social-icons">
+                    <a href="#"><img src="../assets/fac.png" alt="Facebook"></a>
+                    <a href="#"><img src="../assets/ins.png" alt="Instagram"></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Sanag Restaurant. All Rights Reserved.</p>
+        </div>
+    </footer>
+    <script src="../components/index.js"></script>
 </body>
 </html>
