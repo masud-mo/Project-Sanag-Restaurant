@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style files/style.css">
+    <link rel="stylesheet" href="../style files/admin.css">
+    <link rel="icon" href="../assets/chef-hat.png" type="image/png">
+    <title>Admin Dashboard - Sanag Restaurant</title>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="logo">
+            <img src="../assets/chef-hat.png" alt="Sanag Restaurant Logo">
+            <h1>Sanag Restaurant</h1>
+        </a>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="index.html#menu">Menu</a>
+            <a href="about.html">About Us</a>
+            <a href="index.html#contact">Contact</a>
+            <a href="#" id="adminLink">Logout</a>
+            <button id="theme-toggle" class="theme-btn">🌙</button>
+        </div>
+    </div>
+
+    <div class="admin-container">
+        <div class="panel">
+            <h3>Add New Item</h3>
+            <form id="addForm">
+                <div class="form-group">
+                    <label>Dish Name</label>
+                    <input type="text" id="name" required placeholder="e.g. Bariis Iskukaris">
+                </div>
+                <div class="form-group">
+                    <label>Price ($)</label>
+                    <input type="number" id="price" step="0.01" required placeholder="15.99">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="desc" rows="3" required placeholder="Short description..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Dish Image</label>
+                    <input type="file" id="image" accept="image/*">
+                    <img id="imagePreview" style="display: none; width: 100px; height: 100px; object-fit: cover; margin-top: 10px; border-radius: 4px;">
+                </div>
+                <button type="submit" class="btn-primary" id="submitBtn">Add to Menu</button>
+                <button type="button" id="cancelBtn" style="display:none; margin-top:10px; width:100%; padding:10px; background:#666; color:white; border:none; border-radius:4px; cursor:pointer;">Cancel Edit</button>
+            </form>
+        </div>
+        <div class="panel">
+            <h3>Current Menu Items</h3>
+            <ul id="menuList" class="item-list"></ul>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-left">
+                <div class="footer-logo">
+                    <img src="../assets/chef-hat.png" alt="Sanag Restaurant Logo">
+                    <h2>Sanag Restaurant</h2>
+                </div>
+                <p>Experience authentic Somali cuisine in the heart of Minnesota.</p>
+            </div>
+            <div class="footer-nav">
+                <h3> Quick Links</h3>
+                <a href="index.html">Home</a>
+                <a href="index.html#menu">Menu</a>
+                <a href="about.html">About Us</a>
+                <a href="index.html#contact">Contact</a>
+                <a href="#" onclick="logout()">Logout</a>
+            </div>
+            <div class="footer-social">
+                <h3>Follow Us</h3>
+                <div class="social-icons">
+                    <a href="#"><img src="../assets/fac.png" alt="Facebook"></a>
+                    <a href="#"><img src="../assets/ins.png" alt="Instagram"></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Sanag Restaurant. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        if (sessionStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = 'login.html';
+        }
+
+        window.logout = function() {
+            sessionStorage.removeItem('isLoggedIn');
+            window.location.href = 'login.html';
+        }
+        const adminLink = document.getElementById('adminLink');
+        if(adminLink) {
+            adminLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                logout();
+            });
+        }
+
+        const form = document.getElementById('addForm');
+        const list = document.getElementById('menuList');
+        const imageInput = document.getElementById('image');
+        const imagePreview = document.getElementById('imagePreview');
+        const submitBtn = document.getElementById('submitBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        let editingId = null;
+        imageInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function loadItems() {
+            const items = JSON.parse(localStorage.getItem('sanagCustomMenu')) || [];
+            list.innerHTML = items.slice().reverse().map((item) => `
+                <li class="item-row">
+                    ${item.image ? `<img src="${item.image}" alt="${item.name}">` : ''}
+                    <div class="item-info">
+                        <strong>${item.name}</strong>
+                        <div>$${item.price}</div>
+                        <small style="color:#666">${item.desc}</small>
+                    </div>
+                    <button class="btn-edit" onclick="editItem(${item.id})">Edit</button>
+                    <button class="btn-delete" onclick="deleteItem(${item.id})">Delete</button>
+                </li>`).join('');
+        }
+
+        window.deleteItem = (id) => {
+            if(!confirm('Delete this item?')) return;
+            const items = JSON.parse(localStorage.getItem('sanagCustomMenu')) || [];
+            const updatedItems = items.filter(item => item.id !== id);
+            localStorage.setItem('sanagCustomMenu', JSON.stringify(updatedItems));
+            loadItems();
+        };
+
+        window.editItem = (id) => {
+            const items = JSON.parse(localStorage.getItem('sanagCustomMenu')) || [];
+            const item = items.find(i => i.id === id);
+            if (item) {
+                editingId = id;
+                document.getElementById('name').value = item.name;
+                document.getElementById('price').value = item.price;
+                document.getElementById('desc').value = item.desc;
+                imagePreview.src = item.image;
+                imagePreview.style.display = 'block';
+                
+                submitBtn.textContent = 'Update Item';
+                cancelBtn.style.display = 'block';
+            }
+        };
+
+        cancelBtn.addEventListener('click', () => {
+            form.reset();
+            editingId = null;
+            submitBtn.textContent = 'Add to Menu';
+            cancelBtn.style.display = 'none';
+            imagePreview.style.display = 'none';
+        });
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const file = imageInput.files[0];
+            
+            const saveItem = (imgSrc) => {
+                const items = JSON.parse(localStorage.getItem('sanagCustomMenu')) || [];
+                
+                if (editingId) {
+                    const index = items.findIndex(i => i.id === editingId);
+                    if (index !== -1) {
+                        items[index].name = document.getElementById('name').value;
+                        items[index].price = document.getElementById('price').value;
+                        items[index].desc = document.getElementById('desc').value;
+                        if (imgSrc) items[index].image = imgSrc;
+                    }
+                } else {
+                    items.push({
+                        id: Date.now(),
+                        name: document.getElementById('name').value,
+                        price: document.getElementById('price').value,
+                        desc: document.getElementById('desc').value,
+                        image: imgSrc
+                    });
+                }
+
+                localStorage.setItem('sanagCustomMenu', JSON.stringify(items));
+                cancelBtn.click(); 
+                loadItems();
+            };
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onloadend = () => saveItem(reader.result);
+                reader.readAsDataURL(file);
+            } else {
+                saveItem(null);
+            }
+        });
+
+      
+        loadItems();
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        if (hamburger && navLinks) {
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('nav-active');
+            });
+        }
+        const themeToggle = document.getElementById('theme-toggle');
+        if(themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                themeToggle.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+            });
+        }
+    </script>
+</body>
+</html>
