@@ -1,0 +1,83 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f9f9f9;
+  margin: 0;
+  padding: 0;
+}
+
+.about-section {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.about-section h1 {
+  font-size: 36px;
+  color: #333;
+}
+
+.about-section p {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+#loadTeamBtn {
+  padding: 12px 25px;
+  background-color: #f28c28;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#loadTeamBtn:hover {
+  background-color: #d97706;
+}
+
+.team-container {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.team-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.team-card img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.team-card h3 {
+  margin: 10px 0 5px;
+  color: #222;
+}
+
+.team-card p {
+  font-size: 14px;
+  color: #555;
+}
+
+.team-card a {
+  display: inline-block;
+  margin-top: 10px;
+  text-decoration: none;
+  color: #f28c28;
+  font-weight: bold;
+}
+.role {
+  font-weight: bold;
+  color: #111;
+  margin: 8px 0;
+}
+
+.bio {
+  font-size: 14px;
+  color: #555;
+}

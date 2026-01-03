@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style files/style.css">
+    <link rel="stylesheet" href="../style files/about.css">
+    <link rel="icon" href="../assets/chef-hat.png" type="image/png">
+    <title>About Us - Sanag Restaurant</title>
+</head>
+</head>
+<body>
+
+  </section>
+</body>
+<section class="about-section">
+    <h1>About Our Team</h1>
+    <p>Meet the developers who worked on the Sanag Restaurant project.</p>
+
+    <button id="loadTeamBtn">View Our Team</button>
+
+    <div id="teamContainer" class="team-container"></div>
+  </section>
+  <script>
+    const teamMembers = [
+{ username : "amiin5377-amo",
+  role: "Handled the responsive site"
+},
+{
+    username: "masud-mo",
+role: "worked header herosection, footer and api calls"
+},
+{
+    username: "Abdifitah20224",
+    role: "developed contact section"
+}
+
+    ];
+    const TeamContainer = document.querySelector("#teamContainer")
+    const LoadTeamBtn = document.querySelector("#loadTeamBtn")
+    LoadTeamBtn.addEventListener("click",  () => {
+TeamContainer.innerHTML = "";
+teamMembers.forEach(member => fetchGithub(member));
+    });
+    function fetchGithub(member) {
+         fetch(`https://api.github.com/users/${member.username}`)
+    .then(response => response.json())
+    .then(data => {
+      const card = document.createElement("div");
+      card.classList.add("team-card");
+card.innerHTML = `
+        <img src="${data.avatar_url}" alt="${data.login}">
+        <h3>${data.name || data.login}</h3>
+        <p class="role">${member.role}</p>
+        <p class="bio">${data.bio || "Sanag Restaurant Project Contributor"}</p>
+        <a href="${data.html_url}" target="_blank">View GitHub</a>
+      `;
+
+      teamContainer.appendChild(card);
+    })
+    .catch(error => console.error(error));
+    }
+  </script>
+</body>
+
+</html>
