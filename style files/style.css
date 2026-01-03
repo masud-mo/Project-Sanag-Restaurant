@@ -1,4 +1,8 @@
 
+html {
+    scroll-behavior: smooth;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -23,6 +27,7 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
+    text-decoration: none;
 }
 
 .logo img {
@@ -46,6 +51,19 @@ body {
     color: #e67e22; 
 }
 
+.hamburger {
+    display: none;
+    cursor: pointer;
+}
+
+.hamburger span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: #333;
+    margin: 5px 0;
+    transition: all 0.3s ease;
+}
 
 .hero {
     background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../assets/res.jpg');
@@ -155,12 +173,6 @@ body{
   color:#ff7a00;
   font-size:32px;
 }
-
-.subtitle{
-  color:#777;
-  margin-bottom:40px;
-}
-
 .menu-container{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
@@ -272,7 +284,7 @@ body{
     background-color: #2c3e50;
     color: white;
     padding: 40px 50px;
-    margin-top: 50px;
+    margin-top: 0;
     text-align: left;
 }
 
@@ -336,114 +348,102 @@ body{
     font-size: 14px;
 }
 @media  screen and (max-width: 500px) {
-  *{
-    flex-direction: column;
-  }
-  body {
-    flex-direction: column;
-  }
 .container  {
     flex-direction: column;
-
+    padding: 15px;
   }
   .hero {
-    display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    padding: 16px;
-    
-    
+    text-align: center;
+    height: auto;
+    padding: 50px 20px;
   }
   .hero h1 {
-    display: flex;
-    flex-direction: column;
-    
-    padding:  16px;
+    font-size: 3rem;
+  }
 
-  }
-  .hero p {
-    flex-direction: column;
-    
-    padding: 16px;
-  }
-  .btn{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-right: 40px;
-    margin-left: 40px;
+  .hamburger {
+    display: block;
   }
 
   .nav-links{
+    display: none;
     flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+    width: 100%;
+    text-align: center;
   }
-   .hero-content{
-    flex-direction: column;
-    
-    padding: 30px;
-     
-    
+  .nav-links.nav-active {
+    display: flex;
   }
-  .culinary{
-    flex-direction: column;
-  }
-  
-.culinary h2{
-  flex-direction: column;
-}
-    .subtitle{
-      display: flex;
-      flex-direction: column;
 
-    }
     .food-container{
-      display: flex;
-      flex-direction: column;
-      margin: 16px;
-      padding: 8px;
-    }
-    .food-card{
-      display: flex;
-      flex-direction: column
-      
-    }
-    .food-card img{
-      flex-direction: column;
+      grid-template-columns: 1fr;
     }
 
-  
-  .story-image{
+  .story-container{
     flex-direction: column;
   }
-  .story-content{
-    flex-direction: column;
+  .story-image img {
+    width: 100%;
+    height: auto;
   }
-  .story-content h2{ 
-    flex-direction: column;
-  }
-  .visit-us{
-    flex-direction: column;
+  .visit-us > div {
+    width: 100%;
+    display: block;
+    margin: 10px 0;
   }
   .footer-container{
-    
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: flex-start; 
-    margin: 16px;
-padding: 16px;
-
-gap: 20px;
-
+    flex-direction: column;
+    gap: 30px;
   }
-  
-    
+}
+.theme-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+    margin-left: 15px;
+    transition: transform 0.3s ease;
+}
+.theme-btn:hover {
+    transform: scale(1.1);
+}
+body.dark-mode {
+    background-color: #121212;
+    color: #f5f5f5;
+}
 
-  
-  
+body.dark-mode .container,
+body.dark-mode .culinary,
+body.dark-mode .menu,
+body.dark-mode .story,
+body.dark-mode .visit-us,
+body.dark-mode .story-content,
+body.dark-mode .menu-card,
+body.dark-mode .food-card,
+body.dark-mode .visit-us > div {
+    background-color: #1e1e1e;
+    color: #f5f5f5;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
 
-  
+body.dark-mode .logo h1,
+body.dark-mode .nav-links a,
+body.dark-mode .subtitle,
+body.dark-mode .content p,
+body.dark-mode .menu-item p,
+body.dark-mode .story-content p,
+body.dark-mode .visit-us > div p {
+    color: #ddd;
+}
 
+body.dark-mode .hamburger span {
+    background-color: #fff;
+}
+
+body.dark-mode .logo img {
+    filter: invert(1);
 }
