@@ -2,6 +2,7 @@
 const foodContainer = document.getElementById("foodContainer");
 
 async function loadFoods(){
+  if (!foodContainer) return;
   if (typeof axios === 'undefined') {
     console.error("Error: Axios is not loaded. Please include the Axios script in your HTML file.");
     return;

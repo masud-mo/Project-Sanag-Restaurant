@@ -8,12 +8,28 @@
     <link rel="icon" href="../assets/chef-hat.png" type="image/png">
     <title>About Us - Sanag Restaurant</title>
 </head>
-</head>
 <body>
+    <div class="container">
+        <a href="index.html" class="logo">
+            <img src="../assets/chef-hat.png" alt="Sanag Restaurant Logo">
+            <h1>Sanag Restaurant</h1>
+        </a>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="index.html#menu">Menu</a>
+            <a href="about.html">About Us</a>
+            <a href="index.html#contact">Contact</a>
+            <a href="login.html" id="adminLink">Admin Login</a>
+            <button id="theme-toggle" class="theme-btn">🌙</button>
+        </div>
+    </div>
 
-  </section>
-</body>
-<section class="about-section">
+    <section class="about-section">
     <h1>About Our Team</h1>
     <p>Meet the developers who worked on the Sanag Restaurant project.</p>
 
@@ -21,6 +37,37 @@
 
     <div id="teamContainer" class="team-container"></div>
   </section>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-left">
+                <div class="footer-logo">
+                    <img src="../assets/chef-hat.png" alt="Sanag Restaurant Logo">
+                    <h2>Sanag Restaurant</h2>
+                </div>
+                <p>Experience authentic Somali cuisine in the heart of Minnesota.</p>
+            </div>
+            <div class="footer-nav">
+                <h3> Quick Links</h3>
+                <a href="index.html">Home</a>
+                <a href="index.html#menu">Menu</a>
+                <a href="about.html">About Us</a>
+                <a href="index.html#contact">Contact</a>
+                <a href="login.html">Admin Login</a>
+            </div>
+            <div class="footer-social">
+                <h3>Follow Us</h3>
+                <div class="social-icons">
+                    <a href="#"><img src="../assets/fac.png" alt="Facebook"></a>
+                    <a href="#"><img src="../assets/ins.png" alt="Instagram"></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Sanag Restaurant. All Rights Reserved.</p>
+        </div>
+    </footer>
+    <script src="../components/index.js"></script>
   <script>
     const teamMembers = [
 { username : "amiin5377-amo",
